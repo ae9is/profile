@@ -36,7 +36,9 @@ export function App() {
       </div>
       <div>
         <div className="flex gap-4">
-          <h3 className="text-white">Repositories</h3>
+          <a href={`https://github.com/${userLogin}?tab=repositories`}>
+            <h3 className="text-white">Repositories</h3>
+          </a>
           <div className="">{repoCount}</div>
         </div>
         <div className="flex flex-wrap">
