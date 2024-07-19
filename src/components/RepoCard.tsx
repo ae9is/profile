@@ -43,9 +43,9 @@ export function RepoCard(props: RepoCardProps) {
   )
 
   const statusBadge = isArchived ? (
-    <div className="badge border-warning text-warning">Public archive</div>
+    <div className="badge border-warning text-warning overflow-hidden whitespace-nowrap">Public archive</div>
   ) : (
-    <div className="badge border-neutral">Public</div>
+    <div className="badge border-neutral overflow-hidden whitespace-nowrap">Public</div>
   )
 
   return (
