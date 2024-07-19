@@ -1,0 +1,64 @@
+query userRepositories($login: String!) {
+  user(login: $login) {
+    name
+    login
+    bio
+    avatarUrl
+    pinnedItems(first: 10) {
+      totalCount
+      nodes {
+        __typename
+        ... on Repository {
+          name
+          resourcePath
+        }
+        ... on Gist {
+          name
+          resourcePath
+          url
+          stargazerCount
+          isPublic
+          isFork
+          description
+          createdAt
+          pushedAt
+          updatedAt
+          forks {
+            totalCount
+          }
+        }
+      }
+    }
+    repositories(
+      affiliations: OWNER
+      visibility: PUBLIC
+      first: 100
+      orderBy: { direction: DESC, field: UPDATED_AT }
+    ) {
+      totalCount
+      nodes {
+        name
+        createdAt
+        forkCount
+        isArchived
+        isFork
+        isPrivate
+        shortDescriptionHTML
+        stargazerCount
+        pushedAt
+        updatedAt
+        licenseInfo {
+          spdxId
+        }
+        url
+        languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
+          totalCount
+          nodes {
+            name
+            color
+          }
+        }
+      }
+    }
+  }
+}
