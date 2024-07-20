@@ -8,5 +8,5 @@ import resp from '../data/userRepositories.json'
  */
 export function useUserRepositories() {
   //username: string
-  return resp.data.user
+  return resp.user
 }
