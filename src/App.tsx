@@ -47,6 +47,7 @@ export function App() {
   }
 
   function onDiceRoll() {
+    setSortOrder(RepoSort.RESET)
     setDisplayRepos(shuffle(displayRepos))
   }
 
