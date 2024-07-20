@@ -1,0 +1,128 @@
+name: refreshData
+
+on:
+  schedule:
+    # Mondays at 0400
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: "refreshData"
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-data:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [lts/*]
+    steps:
+      - name: Query GitHub API
+        id: query-api
+        uses: actions/github-script@v7
+        env:
+          LOGIN: ${{ github.repository_owner }}
+        with:
+          script: |
+            const { LOGIN } = process.env;
+            const variables = {
+              login: LOGIN,
+            };
+            const query = `
+              query userRepositories($login: String!) {
+                user(login: $login) {
+                  name
+                  login
+                  bio
+                  avatarUrl
+                  pinnedItems(first: 10) {
+                    totalCount
+                    nodes {
+                      __typename
+                      ... on Repository {
+                        name
+                        resourcePath
+                      }
+                      ... on Gist {
+                        name
+                        resourcePath
+                        url
+                        stargazerCount
+                        isPublic
+                        isFork
+                        description
+                        createdAt
+                        pushedAt
+                        updatedAt
+                        forks {
+                          totalCount
+                        }
+                      }
+                    }
+                  }
+                  repositories(
+                    affiliations: OWNER
+                    visibility: PUBLIC
+                    first: 100
+                    orderBy: { direction: DESC, field: UPDATED_AT }
+                  ) {
+                    totalCount
+                    nodes {
+                      name
+                      createdAt
+                      forkCount
+                      isArchived
+                      isFork
+                      isPrivate
+                      shortDescriptionHTML
+                      stargazerCount
+                      pushedAt
+                      updatedAt
+                      licenseInfo {
+                        spdxId
+                      }
+                      url
+                      languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
+                        totalCount
+                        nodes {
+                          name
+                          color
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+            const resp = await github.graphql(query, variables);
+            return resp;
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Write API response
+        run: echo "${{ steps.query-api.outputs.result }}" > src/data/userRepositories.json
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+      
+      - name: Build docs
+        run: npm run build
+
+      - name: Commit changes
+        # EndBug/add-and-commit@v9.1.4
+        uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5
+        with:
+          default_author: github_actions
+          add: '["src/data", "docs"]'
+          message: 'docs: refresh data and rebuild'
