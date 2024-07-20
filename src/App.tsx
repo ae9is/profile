@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
+import Dice from 'react-dice-roll'
 import { RepoCard } from './components/RepoCard'
 import { useUserRepositories } from './hooks/useUserRepositories'
-import { useEffect, useState } from 'react'
+import { shuffle } from './lib/array'
 
 enum RepoSort {
   LAST_UPDATED = 'Last updated',
@@ -10,13 +12,14 @@ enum RepoSort {
 }
 
 export function App() {
-  const [sortOrder, setSortOrder] = useState<RepoSort>(RepoSort.STARS)
   const meta = useUserRepositories()
   const userLogin = meta.login
   const userName = meta.name
   const userAvatar = meta.avatarUrl ?? 'user.svg'
-  const repos = meta.repositories.nodes?.sort(sortBySortOrder)
+  const repos = meta.repositories.nodes
   const repoCount = meta.repositories.totalCount
+  const [sortOrder, setSortOrder] = useState<RepoSort>(RepoSort.STARS)
+  const [displayRepos, setDisplayRepos] = useState<any[]>(repos.sort(sortBySortOrder))
 
   function sortBySortOrder(a: any, b: any) {
     if (sortOrder == RepoSort.LAST_UPDATED) {
@@ -40,6 +43,11 @@ export function App() {
     } else {
       setSortOrder(RepoSort.RESET)
     }
+    setDisplayRepos(repos.sort(sortBySortOrder))
+  }
+
+  function onDiceRoll() {
+    setDisplayRepos(shuffle(displayRepos))
   }
 
   useEffect(() => {
@@ -74,26 +82,34 @@ export function App() {
             </a>
             <div className="">{repoCount}</div>
           </div>
-          <div className="">
-            <label className="w-full max-w-xs">
-              <span className="label-text pr-4">Sort order</span>
-              <select
-                value={sortOrder}
-                onChange={onChangeSort}
-                className="select select-bordered select-sm"
-              >
-                <option disabled selected className="font-bold">
-                  {RepoSort.RESET}
-                </option>
-                <option>{RepoSort.LAST_UPDATED}</option>
-                <option>{RepoSort.NAME}</option>
-                <option>{RepoSort.STARS}</option>
-              </select>
-            </label>
+          <div className="flex gap-8">
+            <div className="">
+              <label className="w-full max-w-xs">
+                <span className="label-text pr-4">Sort order</span>
+                <select
+                  value={sortOrder}
+                  onChange={onChangeSort}
+                  className="select select-bordered select-sm"
+                >
+                  <option disabled selected className="font-bold">
+                    {RepoSort.RESET}
+                  </option>
+                  <option>{RepoSort.LAST_UPDATED}</option>
+                  <option>{RepoSort.NAME}</option>
+                  <option>{RepoSort.STARS}</option>
+                </select>
+              </label>
+            </div>
+            <div className="">
+              <label className="w-full max-w-xs flex items-center">
+                <span className="label-text pr-4">Random!</span>
+                <Dice cheatValue={5} size={32} rollingTime={350} onRoll={onDiceRoll} />
+              </label>
+            </div>
           </div>
         </div>
         <div className="flex flex-wrap">
-          {repos?.map((r) => (
+          {displayRepos?.map((r) => (
             <div key={r?.name} className="px-2 mt-4 w-full md:w-1/2">
               <RepoCard
                 name={r?.name ?? '???'}
