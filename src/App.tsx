@@ -102,11 +102,9 @@ export function App() {
               </label>
             </div>
             <div className="">
-              <label className="w-full max-w-xs flex items-center">
+              <label className="w-full max-w-xs flex items-center mr-2">
                 <span className="label-text mr-4">Random!</span>
-                <div className='mr-2'>
-                  <Dice cheatValue={5} size={32} rollingTime={350} onRoll={onDiceRoll} />
-                </div>
+                <Dice cheatValue={5} size={32} rollingTime={350} onRoll={onDiceRoll} />
               </label>
             </div>
           </div>
