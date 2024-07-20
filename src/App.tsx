@@ -86,7 +86,7 @@ export function App() {
           <div className="flex gap-8">
             <div className="">
               <label className="w-full max-w-xs">
-                <span className="label-text pr-4">Sort order</span>
+                <span className="label-text mr-4">Sort order</span>
                 <select
                   value={sortOrder}
                   onChange={onChangeSort}
@@ -103,8 +103,10 @@ export function App() {
             </div>
             <div className="">
               <label className="w-full max-w-xs flex items-center">
-                <span className="label-text pr-4">Random!</span>
-                <Dice cheatValue={5} size={32} rollingTime={350} onRoll={onDiceRoll} />
+                <span className="label-text mr-4">Random!</span>
+                <div className='mr-2'>
+                  <Dice cheatValue={5} size={32} rollingTime={350} onRoll={onDiceRoll} />
+                </div>
               </label>
             </div>
           </div>
