@@ -1,4 +1,4 @@
-name: refreshData
+name: refresh-data
 
 on:
   schedule:
@@ -7,14 +7,14 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: "refreshData"
+  group: "refresh-data"
   cancel-in-progress: true
 
 permissions:
   contents: write
 
 jobs:
-  fetch-data:
+  refresh-data:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     strategy:
