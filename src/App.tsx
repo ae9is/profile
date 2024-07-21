@@ -58,60 +58,60 @@ export function App() {
   }, [userLogin, userName])
 
   return (
-    <div className="container mx-auto p-4 md:p-8 max-w-screen-xl flex gap-4">
-      <div className="w-64">
+    <div className="container mx-auto p-4 md:p-8 max-w-screen-xl md:flex gap-4">
+      <div className="w-full flex md:block md:w-64 mb-4 gap-4">
         <div className="avatar">
-          <div className="w-64 avatar rounded-full ring ring-neutral bg-neutral">
+          <div className="w-24 md:w-48 lg:w-64 avatar rounded-full ring ring-neutral bg-neutral">
             <img src={userAvatar} alt={'Avatar'} />
           </div>
         </div>
-        <h1 className="font-medium text-3xl text-white">{userName}</h1>
-        <h2>
-          <a href={`https://github.com/${userLogin}`}>{userLogin}</a>
-        </h2>
-        <div className="mt-4">
-          <a href={`https://github.com/${userLogin}/profile/`}>
-            <button className="btn btn-neutral border border-neutral">Profile source</button>
-          </a>
+        <div className="w-full flex md:block md:mt-2 lg:mt-4 justify-between items-center">
+          <div className="block">
+            <h1 className="font-bold text-3xl text-white">{userName}</h1>
+            <h2 className="font-medium text-xl">
+              <a href={`https://github.com/${userLogin}`}>{userLogin}</a>
+            </h2>
+          </div>
+          <div className="mt-4">
+            <a href={`https://github.com/${userLogin}/profile/`}>
+              <button className="btn btn-neutral border border-neutral">Profile source</button>
+            </a>
+          </div>
         </div>
       </div>
       <div>
-        <div className="flex justify-between px-2">
-          <div className="flex gap-4">
+        <div className="flex justify-between md:px-2 items-center">
+          <div className="flex gap-4 pr-4">
             <a href={`https://github.com/${userLogin}?tab=repositories`}>
               <h3 className="text-white">Repositories</h3>
             </a>
             <div className="">{repoCount}</div>
           </div>
           <div className="flex gap-8">
-            <div className="">
-              <label className="w-full max-w-xs">
-                <span className="label-text mr-4">Sort order</span>
-                <select
-                  value={sortOrder}
-                  onChange={onChangeSort}
-                  className="select select-bordered select-sm"
-                >
-                  <option disabled selected className="font-bold">
-                    {RepoSort.RESET}
-                  </option>
-                  <option>{RepoSort.LAST_UPDATED}</option>
-                  <option>{RepoSort.NAME}</option>
-                  <option>{RepoSort.STARS}</option>
-                </select>
-              </label>
-            </div>
-            <div className="">
-              <label className="w-full max-w-xs flex items-center mr-2">
-                <span className="label-text mr-4">Random!</span>
-                <Dice cheatValue={5} size={32} rollingTime={350} onRoll={onDiceRoll} />
-              </label>
-            </div>
+            <label className="flex items-center">
+              <div className="text-sm mr-4">Sort order</div>
+              <select
+                value={sortOrder}
+                onChange={onChangeSort}
+                className="select select-bordered select-sm"
+              >
+                <option disabled className="font-bold">
+                  {RepoSort.RESET}
+                </option>
+                <option>{RepoSort.LAST_UPDATED}</option>
+                <option>{RepoSort.NAME}</option>
+                <option>{RepoSort.STARS}</option>
+              </select>
+            </label>
+            <label className="flex items-center mr-1">
+              <span className="text-sm mr-4">Random!</span>
+              <Dice cheatValue={5} size={32} rollingTime={350} onRoll={onDiceRoll} />
+            </label>
           </div>
         </div>
         <div className="flex flex-wrap">
           {displayRepos?.map((r) => (
-            <div key={r?.name} className="px-2 mt-4 w-full md:w-1/2">
+            <div key={r?.name} className="md:px-2 mt-4 w-full md:w-1/2">
               <RepoCard
                 name={r?.name ?? '???'}
                 url={r?.url}
