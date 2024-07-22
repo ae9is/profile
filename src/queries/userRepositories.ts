@@ -22,14 +22,20 @@ export interface Node {
 }
 
 export interface Gist extends Node {
-  resourcePath?: string
+  resourcePath: string
   url?: string
   isPublic?: boolean
   isFork?: boolean
-  description?: string
+  // Description is the Gist "name" field, basically. Gist name is an unreadable id field.
+  description: string
   createdAt?: string
   pushedAt?: string
   updatedAt?: string
+  forks?: ForkConnection
+}
+
+export interface ForkConnection {
+  totalCount: number
 }
 
 export interface Repository extends Node {
@@ -50,8 +56,17 @@ export interface RepositoryConnection {
 
 export interface PinnedItemConnection {
   totalCount: number
-  nodes: Gist[] | Repository[]
+  nodes: PinnedGist[] | PinnedRepository[]
 }
+
+export interface Pin {
+  __typename: string
+  name: string
+}
+
+export interface PinnedGist extends Pin, Gist {}
+
+export interface PinnedRepository extends Pin, Repository {}
 
 export interface LanguageConnection {
   totalCount: number

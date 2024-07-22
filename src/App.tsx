@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import Dice from 'react-dice-roll'
-import { RepoCard } from './components/RepoCard'
 import { useUserRepositories } from './hooks/useUserRepositories'
 import { shuffle } from './lib/array'
-import { Repository } from './queries/userRepositories'
+import { Gist, PinnedGist, PinnedRepository, Repository } from './queries/userRepositories'
+import { CardList } from './components/cards/CardList'
+import { SHOW_PINNED } from './config'
+import { RepoCard } from './components/cards/RepoCard'
+import { GistCard } from './components/cards/GistCard'
 
 enum RepoSort {
   LAST_UPDATED = 'Last updated',
@@ -17,10 +20,55 @@ export function App() {
   const userLogin = meta.login
   const userName = meta.name
   const userAvatar = meta.avatarUrl ?? 'user.svg'
+  const pins = meta?.pinnedItems?.nodes ?? []
+  const pinCount = meta?.pinnedItems?.totalCount ?? 0
+  const pinnedCards = pins.map(cardFromPin)
   const repos = meta?.repositories?.nodes ?? []
   const repoCount = meta?.repositories?.totalCount ?? 0
   const [sortOrder, setSortOrder] = useState<RepoSort>(RepoSort.STARS)
   const [displayRepos, setDisplayRepos] = useState<Repository[]>(repos.sort(sortBySortOrder))
+  const repoCards = displayRepos.map(cardFromRepo)
+
+  function isGist(pin: PinnedGist | PinnedRepository): pin is PinnedGist {
+    return pin.__typename === 'Gist'
+  }
+
+  function cardFromPin(pin: PinnedGist | PinnedRepository, idx: number) {
+    if (isGist(pin)) {
+      return cardFromGist(pin, idx)
+    }
+    return cardFromRepo(pin, idx)
+  }
+
+  function cardFromRepo(r: Repository, idx: number) {
+    return (
+      <RepoCard
+        key={r?.name ?? idx}
+        name={r?.name ?? '???'}
+        url={r?.url}
+        shortDescriptionHTML={r?.shortDescriptionHTML ?? ' '}
+        languages={r?.languages?.nodes ?? []}
+        repositoryTopics={r?.repositoryTopics?.nodes ?? []}
+        stargazerCount={r?.stargazerCount}
+        forkCount={r?.forkCount}
+        isArchived={r?.isArchived}
+        //thumbnail={'public/thumbs/' + r?.name + '.png'}
+      />
+    )
+  }
+
+  function cardFromGist(g: Gist, idx: number) {
+    return (
+      <GistCard
+        key={g?.name ?? idx}
+        name={g?.name ?? '???'}
+        url={g?.url}
+        description={g?.description ?? '???'}
+        stargazerCount={g?.stargazerCount}
+        forkCount={g?.forks?.totalCount}
+      />
+    )
+  }
 
   function sortBySortOrder(a: Repository, b: Repository) {
     if (sortOrder == RepoSort.LAST_UPDATED) {
@@ -81,6 +129,19 @@ export function App() {
         </div>
       </div>
       <div>
+        {SHOW_PINNED && pinnedCards?.length > 0 && (
+          <>
+            <div className="md:px-2">
+              <div className="flex gap-4 pr-4">
+                <h3 className="text-white">Pinned</h3>
+                <div className="">{pinCount}</div>
+              </div>
+            </div>
+            <div className="mb-8">
+              <CardList cards={pinnedCards} />
+            </div>
+          </>
+        )}
         <div className="flex justify-between md:px-2 items-center">
           <div className="flex gap-4 pr-4">
             <a href={`https://github.com/${userLogin}?tab=repositories`}>
@@ -110,22 +171,8 @@ export function App() {
             </label>
           </div>
         </div>
-        <div className="flex flex-wrap">
-          {displayRepos?.map((r) => (
-            <div key={r?.name} className="md:px-2 mt-4 w-full md:w-1/2">
-              <RepoCard
-                name={r?.name ?? '???'}
-                url={r?.url}
-                shortDescriptionHTML={r?.shortDescriptionHTML ?? ' '}
-                languages={r?.languages?.nodes ?? []}
-                repositoryTopics={r?.repositoryTopics?.nodes ?? []}
-                stargazerCount={r?.stargazerCount}
-                forkCount={r?.forkCount}
-                isArchived={r?.isArchived}
-                //thumbnail={'public/thumbs/' + r?.name + '.png'}
-              />
-            </div>
-          ))}
+        <div className="mb-4">
+          <CardList cards={repoCards} />
         </div>
       </div>
     </div>

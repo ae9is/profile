@@ -1,13 +1,13 @@
-import { Language, RepositoryTopic } from '../queries/userRepositories'
-import { BadgeList } from './badges/BadgeList'
+import { Language, RepositoryTopic } from '../../queries/userRepositories'
+import { BadgeList } from '../badges/BadgeList'
 import {
   // QuestionIcon,
   ForkIcon,
   RepoIcon,
   StarIcon,
-} from './icons'
-import { LanguageBadge } from './badges/LanguageBadge'
-import { TopicBadge } from './badges/TopicBadge'
+} from '../icons'
+import { LanguageBadge } from '../badges/LanguageBadge'
+import { TopicBadge } from '../badges/TopicBadge'
 
 export interface RepoCardProps {
   thumbnail?: string
