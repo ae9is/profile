@@ -3,6 +3,7 @@ import Dice from 'react-dice-roll'
 import { RepoCard } from './components/RepoCard'
 import { useUserRepositories } from './hooks/useUserRepositories'
 import { shuffle } from './lib/array'
+import { Repository } from './queries/userRepositories'
 
 enum RepoSort {
   LAST_UPDATED = 'Last updated',
@@ -16,19 +17,19 @@ export function App() {
   const userLogin = meta.login
   const userName = meta.name
   const userAvatar = meta.avatarUrl ?? 'user.svg'
-  const repos = meta.repositories.nodes
-  const repoCount = meta.repositories.totalCount
+  const repos = meta?.repositories?.nodes ?? []
+  const repoCount = meta?.repositories?.totalCount ?? 0
   const [sortOrder, setSortOrder] = useState<RepoSort>(RepoSort.STARS)
-  const [displayRepos, setDisplayRepos] = useState<any[]>(repos.sort(sortBySortOrder))
+  const [displayRepos, setDisplayRepos] = useState<Repository[]>(repos.sort(sortBySortOrder))
 
-  function sortBySortOrder(a: any, b: any) {
+  function sortBySortOrder(a: Repository, b: Repository) {
     if (sortOrder == RepoSort.LAST_UPDATED) {
-      return new Date(b.updatedAt) > new Date(a.updatedAt) ? 1 : -1
+      return new Date(b?.updatedAt ?? 0) > new Date(a?.updatedAt ?? 0) ? 1 : -1
     } else if (sortOrder == RepoSort.NAME) {
       return a.name.localeCompare(b.name)
     } else {
       // RepoSort.STARS
-      return b.stargazerCount - a.stargazerCount
+      return (b?.stargazerCount ?? 0) - (a?.stargazerCount ?? 0)
     }
   }
 
@@ -116,7 +117,7 @@ export function App() {
                 name={r?.name ?? '???'}
                 url={r?.url}
                 shortDescriptionHTML={r?.shortDescriptionHTML ?? ' '}
-                languages={r?.languages?.nodes}
+                languages={r?.languages?.nodes ?? []}
                 stargazerCount={r?.stargazerCount}
                 forkCount={r?.forkCount}
                 isArchived={r?.isArchived}

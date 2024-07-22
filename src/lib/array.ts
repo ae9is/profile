@@ -10,7 +10,7 @@
  * @param array An array of any elements to shuffle
  * @returns A shuffled array
  */
-export function shuffle(array: unknown[]) {
+export function shuffle<Type>(array: Type[]): Type[] {
   const shuffled = array
     .map((value) => ({ value, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
