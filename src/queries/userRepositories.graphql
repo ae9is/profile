@@ -58,6 +58,15 @@ query userRepositories($login: String!) {
             color
           }
         }
+        repositoryTopics(first: 10) {
+          totalCount
+          nodes {
+            topic {
+              name
+            }
+            url
+          }
+        }
       }
     }
   }

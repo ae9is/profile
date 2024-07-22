@@ -118,6 +118,7 @@ export function App() {
                 url={r?.url}
                 shortDescriptionHTML={r?.shortDescriptionHTML ?? ' '}
                 languages={r?.languages?.nodes ?? []}
+                repositoryTopics={r?.repositoryTopics?.nodes ?? []}
                 stargazerCount={r?.stargazerCount}
                 forkCount={r?.forkCount}
                 isArchived={r?.isArchived}
