@@ -33,6 +33,52 @@ jobs:
               login: LOGIN,
             };
             const query = `
+              fragment RepositoryInfo on Repository {
+                name
+                createdAt
+                forkCount
+                isArchived
+                isFork
+                isPrivate
+                shortDescriptionHTML
+                stargazerCount
+                pushedAt
+                updatedAt
+                licenseInfo {
+                  spdxId
+                }
+                url
+                languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
+                  totalCount
+                  nodes {
+                    name
+                    color
+                  }
+                }
+                repositoryTopics(first: 10) {
+                  totalCount
+                  nodes {
+                    topic {
+                      name
+                    }
+                    url
+                  }
+                }
+              }
+              fragment GistInfo on Gist {
+                name
+                url
+                stargazerCount
+                isPublic
+                isFork
+                description
+                createdAt
+                pushedAt
+                updatedAt
+                forks {
+                  totalCount
+                }
+              }
               query userRepositories($login: String!) {
                 user(login: $login) {
                   name
@@ -44,23 +90,10 @@ jobs:
                     nodes {
                       __typename
                       ... on Repository {
-                        name
-                        resourcePath
+                        ...RepositoryInfo
                       }
                       ... on Gist {
-                        name
-                        resourcePath
-                        url
-                        stargazerCount
-                        isPublic
-                        isFork
-                        description
-                        createdAt
-                        pushedAt
-                        updatedAt
-                        forks {
-                          totalCount
-                        }
+                        ...GistInfo
                       }
                     }
                   }
@@ -72,27 +105,7 @@ jobs:
                   ) {
                     totalCount
                     nodes {
-                      name
-                      createdAt
-                      forkCount
-                      isArchived
-                      isFork
-                      isPrivate
-                      shortDescriptionHTML
-                      stargazerCount
-                      pushedAt
-                      updatedAt
-                      licenseInfo {
-                        spdxId
-                      }
-                      url
-                      languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
-                        totalCount
-                        nodes {
-                          name
-                          color
-                        }
-                      }
+                      ...RepositoryInfo
                     }
                   }
                 }
