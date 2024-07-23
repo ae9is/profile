@@ -62,7 +62,7 @@ export function RepoCard(props: RepoCardProps) {
     ?.map((topic) => <TopicBadge key={topic.topic.name} name={topic.topic.name} url={topic.url} />)
 
   return (
-    <div className="flex flex-col h-full relative rounded-xl bg-base-100 max-w-md shadow-xl border-2 border-neutral">
+    <div className="flex flex-col h-full w-full relative rounded-xl bg-base-100 shadow-xl border-2 border-neutral">
       <div className="flex flex-col flex-auto p-8 pb-4 gap-2">
         <div className="flex items-center gap-2">
           <RepoIcon />
