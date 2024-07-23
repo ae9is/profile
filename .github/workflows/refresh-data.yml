@@ -27,8 +27,8 @@ jobs:
         uses: actions/github-script@v7
         env:
           LOGIN: ${{ github.repository_owner }}
-          GH_TOKEN: ${{ secrets.TOKEN }}
         with:
+          github-token: ${{ secrets.TOKEN }}
           script: |
             const { LOGIN } = process.env;
             const variables = {
