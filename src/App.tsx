@@ -42,7 +42,7 @@ export function App() {
     const isGist = pin.__typename === 'Gist'
     if (isGist) {
       const gist = pin as PinnedGist
-      return gist?.description?.includes(search)
+      return gist?.description?.toLowerCase().includes(search)
     } else {
       const repo = pin as PinnedRepository
       const repoMatch = repo?.name?.toLowerCase()?.includes(search)
