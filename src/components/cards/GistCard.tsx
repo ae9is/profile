@@ -29,7 +29,9 @@ export function GistCard(props: GistCardProps) {
     <div className="flex flex-col h-full w-full relative rounded-xl bg-base-100 shadow-xl border-2 border-neutral">
       <div className="flex flex-col flex-auto p-8 pb-4 gap-2">
         <div className="flex items-center gap-2">
-          <GistIcon />
+          <div className="flex-none">
+            <GistIcon />
+          </div>
           <h2 className="card-title">{gistName}</h2>
         </div>
         {/** <p>Short content of gist {name} goes here ...</p> **/}
