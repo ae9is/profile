@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import Dice from 'react-dice-roll'
 import { useUserRepositories } from './hooks/useUserRepositories'
 import { shuffle } from './lib/array'
@@ -7,12 +7,13 @@ import { CardList } from './components/cards/CardList'
 import { SHOW_PINNED } from './config'
 import { RepoCard } from './components/cards/RepoCard'
 import { GistCard } from './components/cards/GistCard'
+import { SearchInput } from './components/SearchInput'
 
 enum RepoSort {
   LAST_UPDATED = 'Last updated',
   NAME = 'Name',
   STARS = 'Stars',
-  RESET = 'Sort',
+  RANDOM = 'Random',
 }
 
 export function App() {
@@ -21,13 +22,52 @@ export function App() {
   const userName = meta.name
   const userAvatar = meta.avatarUrl ?? 'user.svg'
   const pins = meta?.pinnedItems?.nodes ?? []
-  const pinCount = meta?.pinnedItems?.totalCount ?? 0
-  const pinnedCards = pins.map(cardFromPin)
+  const [searchText, setSearchText] = useState<string>('')
+  const pinnedCards = pins.filter(pinMatchesSearch).map(cardFromPin)
+  const pinCount = pinnedCards?.length ?? meta?.pinnedItems?.totalCount ?? 0
   const repos = meta?.repositories?.nodes ?? []
-  const repoCount = meta?.repositories?.totalCount ?? 0
   const [sortOrder, setSortOrder] = useState<RepoSort>(RepoSort.STARS)
-  const [displayRepos, setDisplayRepos] = useState<Repository[]>(repos.sort(sortBySortOrder))
+  const [sortedRepos, setSortedRepos] = useState<Repository[]>(
+    repos.sort((a, b) => sortBySortOrder(a, b, sortOrder))
+  )
+  const displayRepos = sortedRepos.filter((repo) => repoMatchesSearch(repo, searchText))
+  const repoCount = displayRepos?.length ?? meta?.repositories?.totalCount ?? 0
   const repoCards = displayRepos.map(cardFromRepo)
+
+  function pinMatchesSearch(pin: PinnedGist | PinnedRepository) {
+    if (!searchText) {
+      return true
+    }
+    const search = searchText.toLowerCase()
+    const isGist = pin.__typename === 'Gist'
+    if (isGist) {
+      const gist = pin as PinnedGist
+      return gist?.description?.toLowerCase().includes(search)
+    } else {
+      const repo = pin as PinnedRepository
+      const repoMatch = repo?.name?.toLowerCase()?.includes(search)
+      const langMatch = repo?.languages?.nodes?.some((l) => l?.name?.toLowerCase().includes(search))
+      const descMatch = repo?.shortDescriptionHTML?.toLowerCase().includes(search)
+      const topicMatch = repo?.repositoryTopics?.nodes?.some((n) =>
+        n?.topic?.name?.toLowerCase().includes(search)
+      )
+      return repoMatch || langMatch || descMatch || topicMatch
+    }
+  }
+
+  function repoMatchesSearch(repo: Repository, searchText: string) {
+    if (!searchText) {
+      return true
+    }
+    const search = searchText.toLowerCase()
+    const repoMatch = repo?.name?.toLowerCase().includes(search)
+    const langMatch = repo?.languages?.nodes?.some((l) => l?.name?.toLowerCase().includes(search))
+    const descMatch = repo?.shortDescriptionHTML?.toLowerCase().includes(search)
+    const topicMatch = repo?.repositoryTopics?.nodes?.some((n) =>
+      n?.topic?.name?.toLowerCase().includes(search)
+    )
+    return repoMatch || langMatch || descMatch || topicMatch
+  }
 
   function isGist(pin: PinnedGist | PinnedRepository): pin is PinnedGist {
     return pin.__typename === 'Gist'
@@ -70,7 +110,7 @@ export function App() {
     )
   }
 
-  function sortBySortOrder(a: Repository, b: Repository) {
+  function sortBySortOrder(a: Repository, b: Repository, sortOrder: RepoSort) {
     if (sortOrder == RepoSort.LAST_UPDATED) {
       return new Date(b?.updatedAt ?? 0) > new Date(a?.updatedAt ?? 0) ? 1 : -1
     } else if (sortOrder == RepoSort.NAME) {
@@ -83,21 +123,28 @@ export function App() {
 
   function onChangeSort(event: React.FormEvent<HTMLSelectElement>) {
     const value = event.currentTarget.value
+    let newSortOrder: RepoSort = sortOrder
     if (value == RepoSort.LAST_UPDATED) {
-      setSortOrder(RepoSort.LAST_UPDATED)
+      newSortOrder = RepoSort.LAST_UPDATED
     } else if (value == RepoSort.NAME) {
-      setSortOrder(RepoSort.NAME)
+      newSortOrder = RepoSort.NAME
     } else if (value == RepoSort.STARS) {
-      setSortOrder(RepoSort.STARS)
+      newSortOrder = RepoSort.STARS
     } else {
-      setSortOrder(RepoSort.RESET)
+      console.error('No such sort order: ', value)
     }
-    setDisplayRepos(repos.sort(sortBySortOrder))
+    setSortOrder(newSortOrder)
+    setSortedRepos((repos) => repos.sort((a, b) => sortBySortOrder(a, b, newSortOrder)))
   }
 
   function onDiceRoll() {
-    setSortOrder(RepoSort.RESET)
-    setDisplayRepos(shuffle(displayRepos))
+    setSortOrder(RepoSort.RANDOM)
+    setSortedRepos((repos) => shuffle(repos))
+  }
+
+  function onChangeSearch(event: ChangeEvent<HTMLInputElement>) {
+    const newSearch = event?.currentTarget?.value
+    setSearchText(newSearch)
   }
 
   useEffect(() => {
@@ -128,8 +175,11 @@ export function App() {
           </div>
         </div>
       </div>
-      <div>
-        {SHOW_PINNED && pinnedCards?.length > 0 && (
+      <div className="w-full">
+        <div className="md:px-2 mb-8">
+          <SearchInput value={searchText} onChange={onChangeSearch} />
+        </div>
+        {SHOW_PINNED && (
           <>
             <div className="md:px-2">
               <div className="flex gap-4 pr-4">
@@ -157,8 +207,8 @@ export function App() {
                 onChange={onChangeSort}
                 className="select select-bordered select-sm"
               >
-                <option disabled className="font-bold">
-                  {RepoSort.RESET}
+                <option hidden disabled>
+                  {RepoSort.RANDOM}
                 </option>
                 <option>{RepoSort.LAST_UPDATED}</option>
                 <option>{RepoSort.NAME}</option>
