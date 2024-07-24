@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useRef } from 'react'
+import { ApmBadge, ApmBadgeRef } from './badges/ApmBadge'
 
 export interface SearchInputProps {
   placeholder?: string
@@ -8,21 +9,19 @@ export interface SearchInputProps {
 
 export function SearchInput(props: SearchInputProps) {
   const { placeholder = 'Search', value, onChange } = props
+  const apmRef = useRef<ApmBadgeRef>(null)
+
+  function onKeyDown() {
+    apmRef.current?.trigger()
+  }
 
   return (
-    <label className="input input-bordered flex items-center gap-2">
-      <input
-        type="text"
-        className="grow text-white"
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-      />
+    <label className="input input-bordered flex items-center gap-3">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 16 16"
         fill="currentColor"
-        className="h-4 w-4 opacity-70"
+        className="h-4 w-4 opacity-70 mb-0.5"
       >
         <path
           fillRule="evenodd"
@@ -30,6 +29,15 @@ export function SearchInput(props: SearchInputProps) {
           clipRule="evenodd"
         />
       </svg>
+      <input
+        type="text"
+        className="grow text-white"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+      />
+      <ApmBadge ref={apmRef} />
     </label>
   )
 }
