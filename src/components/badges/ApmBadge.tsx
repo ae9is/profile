@@ -47,9 +47,10 @@ export const ApmBadge = forwardRef(function ApmBadge(props: ApmBadgeProps, ref: 
     if (apm > colorThreshold) {
       color = '#f00'
     } else if (apm === 0) {
-      color = '#000'
+      color = 'hsl(0, 100%, 100%, 0)'
     } else {
-      color = `hsl(0, 100%, ${Math.round((apm / colorThreshold) * 50)}%)`
+      color = `hsl(0, 100%, ${Math.round(100 - (apm / colorThreshold) * 50)}%, ${Math.max(0.2, Math.min(1, apm / colorThreshold))})`
+      console.log(color)
     }
     return color
   }
@@ -80,14 +81,18 @@ export const ApmBadge = forwardRef(function ApmBadge(props: ApmBadgeProps, ref: 
   }, [])
 
   return (
-    <div
-      className={classes}
-      style={{
-        color: color,
-      }}
-    >
-      <div>{apm}</div>
-      <div className="font-thin text-xs text-bg-200">APM</div>
-    </div>
+    <>
+      {apm >= 0 && (
+        <div
+          className={classes}
+          style={{
+            color: color,
+          }}
+        >
+          <div>{apm}</div>
+          <div className="font-thin text-xs text-bg-200">APM</div>
+        </div>
+      )}
+    </>
   )
 })
