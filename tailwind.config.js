@@ -19,7 +19,16 @@ module.exports = {
   ],
   daisyui: {
     themes: [
-      'light', 'dark'
+      {
+        light: {
+          ...require('daisyui/src/theming/themes')['light'],
+          primary: '#3377ee',
+        },
+        dark: {
+          ...require('daisyui/src/theming/themes')['dark'],
+          primary: '#4daafc',
+        },
+      }
     ],
     darkTheme: 'dark',
   },
