@@ -4,6 +4,7 @@ export interface IconProps {
   className?: string
   viewBox?: string
   width?: string
+  strokeWidth?: number
 
   // Pass through the SVG <path>s for the specific icon
   svgPaths?: React.ReactNode
@@ -16,6 +17,7 @@ export function Icon(props: IconProps) {
     className = 'w-4 h-4 align-text-bottom',
     viewBox = '0 0 16 16',
     width = '16',
+    strokeWidth = 1,
     svgPaths,
   } = props
   return (
@@ -27,7 +29,7 @@ export function Icon(props: IconProps) {
       version="1.1"
       data-view-component="true"
       viewBox={viewBox}
-      strokeWidth={1}
+      strokeWidth={strokeWidth}
       stroke={stroke}
       className={className}
     >

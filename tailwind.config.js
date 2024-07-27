@@ -19,19 +19,9 @@ module.exports = {
   ],
   daisyui: {
     themes: [
-      'light',
-      'dark',
-      {
-        myprofile: {
-          primary: '#4493f8',
-        },
-      },
+      'light', 'dark'
     ],
+    darkTheme: 'dark',
   },
-  theme: {
-    extend: {
-      colors: {
-      },
-    },
-  },
+  darkMode: ['class', '[data-theme="dark"]'],
 }

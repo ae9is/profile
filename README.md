@@ -16,6 +16,8 @@ This project explores the second option.
 
 If you really don't care about the profile gamification and/or privacy, feel free to use this project anyways as a starter for your own personal page!
 
+There's some intentional differences from the default profile, and a couple of Easter eggs just for fun.
+
 ## How to Use
 
 Fork/clone and run the `refresh-data` GitHub Action once to start. Enable Pages.
