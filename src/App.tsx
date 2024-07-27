@@ -9,6 +9,7 @@ import { RepoCard } from './components/cards/RepoCard'
 import { GistCard } from './components/cards/GistCard'
 import { SearchInput } from './components/SearchInput'
 import { ThemeChanger } from './components/theme/ThemeChanger'
+import { initialTheme } from './lib/theme'
 
 enum RepoSort {
   LAST_UPDATED = 'Last updated',
@@ -153,6 +154,11 @@ export function App() {
     const titleText = `${userLogin} ${titleUserName}• GitHub`
     document.title = titleText
   }, [userLogin, userName])
+
+  useEffect(() => {
+    const htmlRoot = document.documentElement
+    htmlRoot.setAttribute('data-theme', initialTheme)
+  }, [])
 
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-screen-xl md:flex gap-4">
