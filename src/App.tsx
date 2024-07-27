@@ -3,11 +3,12 @@ import Dice from 'react-dice-roll'
 import { useUserRepositories } from './hooks/useUserRepositories'
 import { shuffle } from './lib/array'
 import { Gist, PinnedGist, PinnedRepository, Repository } from './queries/userRepositories'
-import { CardList } from './components/cards/CardList'
 import { SHOW_PINNED } from './config'
+import { CardList } from './components/cards/CardList'
 import { RepoCard } from './components/cards/RepoCard'
 import { GistCard } from './components/cards/GistCard'
 import { SearchInput } from './components/SearchInput'
+import { ThemeChanger } from './components/theme/ThemeChanger'
 
 enum RepoSort {
   LAST_UPDATED = 'Last updated',
@@ -161,17 +162,20 @@ export function App() {
             <img src={userAvatar} alt={'Avatar'} />
           </div>
         </div>
-        <div className="w-full flex md:block md:mt-2 lg:mt-4 justify-between items-center">
+        <div className="w-full flex md:flex-col md:mt-2 lg:mt-4 justify-between">
           <div className="block">
-            <h1 className="font-bold text-3xl text-white">{userName}</h1>
+            <h1 className="font-bold text-3xl text-black dark:text-white">{userName}</h1>
             <h2 className="font-medium text-xl">
               <a href={`https://github.com/${userLogin}`}>{userLogin}</a>
             </h2>
           </div>
-          <div className="mt-4">
+          <div className="mt-2 md:mt-4">
             <a href={`https://github.com/${userLogin}/profile/`}>
-              <button className="btn btn-neutral border border-neutral">Profile source</button>
+              <button className="w-full btn btn-sm dark:btn-neutral text-sm font-normal border border-base-300 dark:border-neutral">Profile source</button>
             </a>
+          </div>
+          <div className="mt-2 md:mt-4 -mr-3">
+            <ThemeChanger />
           </div>
         </div>
       </div>
@@ -183,7 +187,7 @@ export function App() {
           <>
             <div className="md:px-2">
               <div className="flex gap-4 pr-4">
-                <h3 className="text-white">Pinned</h3>
+                <h3 className="text-black dark:text-white">Pinned</h3>
                 <div className="">{pinCount}</div>
               </div>
             </div>
@@ -195,7 +199,7 @@ export function App() {
         <div className="flex justify-between md:px-2 items-center">
           <div className="flex gap-4 pr-4">
             <a href={`https://github.com/${userLogin}?tab=repositories`}>
-              <h3 className="text-white">Repositories</h3>
+              <h3 className="text-black dark:text-white">Repositories</h3>
             </a>
             <div className="">{repoCount}</div>
           </div>

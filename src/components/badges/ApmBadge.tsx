@@ -1,4 +1,5 @@
 import { forwardRef, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { isDefaultThemeActive } from '../../lib/theme'
 import './ApmBadge.css'
 
 export interface ApmBadgeProps {
@@ -36,21 +37,29 @@ const UPDATE_INTERVAL = 50
  */
 export const ApmBadge = forwardRef(function ApmBadge(props: ApmBadgeProps, ref: Ref<ApmBadgeRef>) {
   const { rumbleThreshold = 500, colorThreshold = 300 } = props
+  const darkMode = isDefaultThemeActive()
   const changeCount = useRef(0)
   const [apm, setApm] = useState(0)
-  const color = apmToColor(apm)
+  const color = apmToColor(apm, darkMode)
   const animation = apm > rumbleThreshold ? ' apm-badge-rumble' : ''
   const classes = 'flex gap-1 items-center justify-center rounded-xl text-primary' + animation
 
-  function apmToColor(apm: number) {
+  function apmToColor(apm: number, darkMode: boolean) {
     let color
     if (apm > colorThreshold) {
       color = '#f00'
     } else if (apm === 0) {
-      color = 'hsl(0, 100%, 100%, 0)'
+      if (darkMode) {
+        color = 'hsl(0, 100%, 100%, 0)'
+      } else {
+        color = 'hsl(0, 100%, 0%, 0)'
+      }
     } else {
-      color = `hsl(0, 100%, ${Math.round(100 - (apm / colorThreshold) * 50)}%, ${Math.max(0.2, Math.min(1, apm / colorThreshold))})`
-      console.log(color)
+      if (darkMode) {
+        color = `hsl(0, 100%, ${Math.round(100 - (apm / colorThreshold) * 50)}%, ${Math.max(0.2, Math.min(1, apm / colorThreshold))})`
+      } else {
+        color = `hsl(0, 100%, ${Math.round((apm / colorThreshold) * 50)}%, ${Math.max(0.2, Math.min(1, apm / colorThreshold))})`
+      }
     }
     return color
   }
