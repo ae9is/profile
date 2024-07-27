@@ -171,7 +171,7 @@ export function App() {
           </div>
           <div className="mt-2 md:mt-4">
             <a href={`https://github.com/${userLogin}/profile/`}>
-              <button className="btn btn-neutral border border-neutral">Profile source</button>
+              <button className="w-full btn btn-sm dark:btn-neutral text-sm font-normal border border-base-300 dark:border-neutral">Profile source</button>
             </a>
           </div>
           <div className="mt-2 md:mt-4 -mr-3">
