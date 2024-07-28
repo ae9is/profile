@@ -1,4 +1,3 @@
-
 .apm-badge-rumble {
   animation-name: apm-badge-rumble-animation;
   animation-duration: 0.1s;
@@ -6,9 +5,19 @@
 }
 
 @keyframes apm-badge-rumble-animation {
-  0% { transform: translate3d(0, 0, 0); }
-  25% { transform: translate3d(-.05rem, 0.2rem, 0); }
-  50% { transform: translate3d(0, 0, 0); }
-  75% { transform: translate3d(.05rem, -0.2rem, 0); }
-  100% { transform: translate3d(0, 0, 0); }
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(-0.05rem, 0.2rem, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  75% {
+    transform: translate3d(0.05rem, -0.2rem, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }

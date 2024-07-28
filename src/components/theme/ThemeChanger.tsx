@@ -7,7 +7,10 @@ import { LightModeIcon } from '../icons/LightModeIcon'
 
 // Two state theme changer, for example to swap between light and dark modes
 export function ThemeChanger() {
-  const initialTheme = (typeof window !== 'undefined') ? window?.localStorage?.getItem('theme') ?? defaultTheme : defaultTheme
+  const initialTheme =
+    typeof window !== 'undefined'
+      ? window?.localStorage?.getItem('theme') ?? defaultTheme
+      : defaultTheme
   const [theme, setTheme] = useState(initialTheme)
   const checked = theme === defaultTheme
 
@@ -38,8 +41,8 @@ export function ThemeChanger() {
       readOnly
       checked={checked}
       onChange={handleChange}
-      icon={<DarkModeIcon fill="white" className='w-6 h-6' />}
-      uncheckedIcon={<LightModeIcon stroke='black' strokeWidth={1.5} className='w-6 h-6' />}
+      icon={<DarkModeIcon fill="white" className="w-6 h-6" />}
+      uncheckedIcon={<LightModeIcon stroke="black" strokeWidth={1.5} className="w-6 h-6" />}
     />
   )
 }

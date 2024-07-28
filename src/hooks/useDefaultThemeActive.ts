@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { defaultTheme, initialTheme } from "../lib/theme";
+import { useEffect, useState } from 'react'
+import { defaultTheme, initialTheme } from '../lib/theme'
 
 export function useDefaultThemeActive() {
   const [isActive, setIsActive] = useState(initialTheme === defaultTheme)
@@ -8,7 +8,7 @@ export function useDefaultThemeActive() {
     const dataTheme = document.documentElement.getAttribute('data-theme')
     setIsActive(dataTheme === defaultTheme)
   }
- 
+
   useEffect(() => {
     // Handle change once to start and then only if attributes are modified
     handleChange()
@@ -30,4 +30,3 @@ export function useDefaultThemeActive() {
 
   return isActive
 }
-
