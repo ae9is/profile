@@ -2,6 +2,7 @@ fragment RepositoryInfo on Repository {
   name
   createdAt
   forkCount
+  homepageUrl
   isArchived
   isFork
   isPrivate

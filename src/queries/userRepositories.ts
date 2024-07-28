@@ -40,6 +40,7 @@ export interface ForkConnection {
 
 export interface Repository extends Node {
   forkCount?: number
+  homepageUrl?: string
   isArchived?: boolean
   isPrivate?: boolean
   shortDescriptionHTML?: string

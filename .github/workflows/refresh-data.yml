@@ -39,6 +39,7 @@ jobs:
                 name
                 createdAt
                 forkCount
+                homepageUrl
                 isArchived
                 isFork
                 isPrivate
