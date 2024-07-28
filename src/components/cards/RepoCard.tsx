@@ -1,4 +1,5 @@
 import { Language, RepositoryTopic } from '../../queries/userRepositories'
+import { useDefaultThemeActive } from '../../hooks/useDefaultThemeActive'
 import { BadgeList } from '../badges/BadgeList'
 import {
   // QuestionIcon,
@@ -8,11 +9,13 @@ import {
 } from '../icons'
 import { LanguageBadge } from '../badges/LanguageBadge'
 import { TopicBadge } from '../badges/TopicBadge'
+import { LinkIcon } from '../icons/LinkIcon'
 
 export interface RepoCardProps {
   thumbnail?: string
   name?: string
   url?: string
+  homepageUrl?: string
   shortDescriptionHTML?: string
   languages?: Language[]
   stargazerCount?: number
@@ -25,7 +28,8 @@ export function RepoCard(props: RepoCardProps) {
   const {
     // thumbnail,
     name = 'my-project',
-    url,
+    url = 'https://github.com/username/repository-name',
+    homepageUrl = 'http://example.com',
     shortDescriptionHTML = 'A description of the project',
     languages = [{ name: 'TypeScript', color: '#3178c6' }],
     repositoryTopics = [
@@ -61,6 +65,10 @@ export function RepoCard(props: RepoCardProps) {
     ?.slice(0, 5)
     ?.map((topic) => <TopicBadge key={topic.topic.name} name={topic.topic.name} url={topic.url} />)
 
+  const darkMode = useDefaultThemeActive()
+  const homepageUrlShort = homepageUrl?.split('//')?.[1]
+  const homepageUrlIconFill = darkMode ? 'white' : 'black'
+
   return (
     <div className="flex flex-col h-full w-full relative rounded-xl bg-base-100 shadow-xl border-2 border-neutral">
       <div className="flex flex-col flex-auto p-8 pb-4 gap-2">
@@ -72,6 +80,16 @@ export function RepoCard(props: RepoCardProps) {
           {statusBadge}
         </div>
         <p>{shortDescriptionHTML}</p>
+        {homepageUrl && (
+          <div className="flex items-center gap-2">
+            <div className="flex-none">
+              <LinkIcon fill={homepageUrlIconFill} />{' '}
+            </div>
+            <a className="font-bold text-primary hover:underline" href={homepageUrl}>
+              {homepageUrlShort}
+            </a>
+          </div>
+        )}
       </div>
       {/**
       <figure>

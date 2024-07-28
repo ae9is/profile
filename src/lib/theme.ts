@@ -5,7 +5,3 @@ export const initialTheme =
   typeof window !== 'undefined'
     ? window?.localStorage?.getItem('theme') || defaultTheme
     : defaultTheme
-
-export function isDefaultThemeActive() {
-  return document.documentElement.getAttribute('data-theme') === defaultTheme
-}

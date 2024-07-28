@@ -1,5 +1,5 @@
 import { forwardRef, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react'
-import { isDefaultThemeActive } from '../../lib/theme'
+import { useDefaultThemeActive } from '../../hooks/useDefaultThemeActive'
 import './ApmBadge.css'
 
 export interface ApmBadgeProps {
@@ -37,7 +37,7 @@ const UPDATE_INTERVAL = 50
  */
 export const ApmBadge = forwardRef(function ApmBadge(props: ApmBadgeProps, ref: Ref<ApmBadgeRef>) {
   const { rumbleThreshold = 500, colorThreshold = 300 } = props
-  const darkMode = isDefaultThemeActive()
+  const darkMode = useDefaultThemeActive()
   const changeCount = useRef(0)
   const [apm, setApm] = useState(0)
   const color = apmToColor(apm, darkMode)
