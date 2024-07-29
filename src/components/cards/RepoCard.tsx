@@ -81,7 +81,11 @@ export function RepoCard(props: RepoCardProps) {
         </div>
         <p>{shortDescriptionHTML}</p>
         {homepageUrl && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 overflow-hidden"
+            style={{
+              maskImage: 'linear-gradient(90deg, #000 90%, transparent)',
+            }}
+          >
             <div className="flex-none">
               <LinkIcon fill={homepageUrlIconFill} />{' '}
             </div>
