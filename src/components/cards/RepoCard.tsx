@@ -54,7 +54,7 @@ export function RepoCard(props: RepoCardProps) {
       Public archive
     </div>
   ) : (
-    <div className="badge border-neutral overflow-hidden whitespace-nowrap">Public</div>
+    <div className="badge border-neutral text-neutral-content overflow-hidden whitespace-nowrap">Public</div>
   )
 
   const languageBadges = languages
@@ -70,7 +70,7 @@ export function RepoCard(props: RepoCardProps) {
   const homepageUrlIconFill = darkMode ? 'white' : 'black'
 
   return (
-    <div className="flex flex-col h-full w-full relative rounded-xl bg-base-100 shadow-xl border-2 border-neutral">
+    <div className="flex flex-col h-full w-full relative rounded-xl bg-base-100 shadow-xl border-2 border-neutral text-neutral-content">
       <div className="flex flex-col flex-auto p-8 pb-4 gap-2">
         <div className="flex items-center gap-2">
           <div className="flex-none">

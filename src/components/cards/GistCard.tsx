@@ -26,7 +26,7 @@ export function GistCard(props: GistCardProps) {
   )
 
   return (
-    <div className="flex flex-col h-full w-full relative rounded-xl bg-base-100 shadow-xl border-2 border-neutral">
+    <div className="flex flex-col h-full w-full relative rounded-xl bg-base-100 shadow-xl border-2 dark:border-1 border-neutral text-neutral-content">
       <div className="flex flex-col flex-auto p-8 pb-4 gap-2">
         <div className="flex items-center gap-2">
           <div className="flex-none">
