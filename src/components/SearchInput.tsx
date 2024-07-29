@@ -31,7 +31,7 @@ export function SearchInput(props: SearchInputProps) {
       </svg>
       <input
         type="text"
-        className="grow text-black dark:text-white"
+        className="grow text-black dark:text-white placeholder:text-neutral-content"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
