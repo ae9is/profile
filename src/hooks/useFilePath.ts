@@ -12,9 +12,13 @@ export const imageExtensions = [
 ]
 
 export function useFilePath(basePath: string, possibleExtensions = imageExtensions) {
-  const [path, setPath] = useState<string | undefined>()
+  const [path, setPath] = useState<string | null | undefined>()
 
   useEffect(() => {
+    if (path !== undefined) {
+      // Don't refetch
+      return
+    }
     const findPath = async (basePath: string, possibleExtensions: string[]) => {
       const promises = possibleExtensions.map((ext) =>
         (async () => {
@@ -39,11 +43,11 @@ export function useFilePath(basePath: string, possibleExtensions = imageExtensio
         setPath(found)
       } catch (aggregateErr) {
         // console.warn(`No thumbnail found for ${basePath}`)
+        setPath(null)
       }
     }
-
     findPath(basePath, possibleExtensions)
-  }, [basePath, possibleExtensions])
+  }, [path, basePath, possibleExtensions])
 
   return path
 }
