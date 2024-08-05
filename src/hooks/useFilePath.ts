@@ -34,8 +34,12 @@ export function useFilePath(basePath: string, possibleExtensions = imageExtensio
           throw new Error('reject')
         })().catch()
       )
-      const found = await Promise.any(promises)
-      setPath(found)
+      try {
+        const found = await Promise.any(promises)
+        setPath(found)
+      } catch (aggregateErr) {
+        // console.warn(`No thumbnail found for ${basePath}`)
+      }
     }
 
     findPath(basePath, possibleExtensions)
