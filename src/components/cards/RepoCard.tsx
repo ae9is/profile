@@ -10,6 +10,7 @@ import {
 import { LanguageBadge } from '../badges/LanguageBadge'
 import { TopicBadge } from '../badges/TopicBadge'
 import { LinkIcon } from '../icons/LinkIcon'
+import { useFilePath } from '../../hooks/useFilePath'
 
 export interface RepoCardProps {
   thumbnail?: string
@@ -54,7 +55,9 @@ export function RepoCard(props: RepoCardProps) {
       Public archive
     </div>
   ) : (
-    <div className="badge border-neutral text-neutral-content overflow-hidden whitespace-nowrap">Public</div>
+    <div className="badge border-neutral text-neutral-content overflow-hidden whitespace-nowrap">
+      Public
+    </div>
   )
 
   const languageBadges = languages
@@ -69,9 +72,11 @@ export function RepoCard(props: RepoCardProps) {
   const homepageUrlShort = homepageUrl?.split('//')?.[1]
   const homepageUrlIconFill = darkMode ? 'white' : 'black'
 
+  const thumbnail = useFilePath(`/profile/thumbs/${name}`)
+
   return (
     <div className="flex flex-col h-full w-full relative rounded-xl bg-base-100 shadow-xl border-2 border-neutral text-neutral-content">
-      <div className="flex flex-col flex-auto p-8 pb-4 gap-2">
+      <div className="flex flex-col p-8 pb-2 gap-2">
         <div className="flex items-center gap-2">
           <div className="flex-none">
             <RepoIcon />
@@ -81,7 +86,8 @@ export function RepoCard(props: RepoCardProps) {
         </div>
         <p>{shortDescriptionHTML}</p>
         {homepageUrl && (
-          <div className="flex items-center gap-2 overflow-hidden"
+          <div
+            className="flex items-center gap-2 overflow-hidden"
             style={{
               maskImage: 'linear-gradient(90deg, #000 90%, transparent)',
             }}
@@ -95,18 +101,16 @@ export function RepoCard(props: RepoCardProps) {
           </div>
         )}
       </div>
-      {/**
-      <figure>
-        {!!thumbnail && <img src={thumbnail} height={200} width={200} alt={name} />}
-        {!thumbnail && <QuestionIcon />}
-      </figure>
-      **/}
+      <div className="flex flex-auto p-8 py-2 items-start justify-center max-h-48">
+        {!!thumbnail && <img className="max-w-full max-h-full" src={thumbnail} alt={name} />}
+        {/** {!thumbnail && <QuestionIcon />} **/}
+      </div>
       {topicBadges?.length > 0 && (
-        <div className="flex flex-auto p-8 py-4">
+        <div className="flex flex-none p-8 py-2">
           <BadgeList badges={topicBadges} />
         </div>
       )}
-      <div className="flex p-8 pt-4 gap-4">
+      <div className="flex p-8 pt-2 gap-4">
         <BadgeList badges={languageBadges} />
         <a href={`${url}/stargazers`} className="hover:text-primary">
           <div className="flex items-center gap-1">
