@@ -104,9 +104,11 @@ export function RepoCard(props: RepoCardProps) {
         </div>
         {!!thumbnail && (
           <div className="flex flex-auto p-8 py-2 items-start justify-center h-48 max-h-full">
-            <img className="max-w-full max-h-full" src={thumbnail} alt={name} />
-            {/**!!thumbnail && <img className="max-w-full max-h-full" src={thumbnail} alt={name} />**/}
-            {/** {!thumbnail && <QuestionIcon />} **/}
+            <a href={url} className="w-full h-full flex flex-auto items-start justify-center">
+              <img className="max-w-full max-h-full" src={thumbnail} alt={name} />
+              {/**!!thumbnail && <img className="max-w-full max-h-full" src={thumbnail} alt={name} />**/}
+              {/** {!thumbnail && <QuestionIcon />} **/}
+            </a>
           </div>
         )}
         {topicBadges?.length > 0 && (
