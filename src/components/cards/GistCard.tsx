@@ -1,4 +1,6 @@
+import { useDefaultThemeActive } from '../../hooks/useDefaultThemeActive'
 import { ForkIcon, GistIcon, StarIcon } from '../icons'
+import { FileIcon } from '../icons/FileIcon'
 
 export interface GistCardProps {
   name?: string
@@ -25,9 +27,12 @@ export function GistCard(props: GistCardProps) {
     <>{description}</>
   )
 
+  const darkMode = useDefaultThemeActive()
+  const iconFill = darkMode ? 'white' : 'black'
+
   return (
     <div className="flex flex-col h-full w-full relative rounded-xl bg-base-100 shadow-xl border-2 dark:border-1 border-neutral text-neutral-content">
-      <div className="flex flex-col flex-auto p-8 pb-4 gap-2">
+      <div className="flex flex-col p-8 pb-4 gap-2">
         <div className="flex items-center gap-2">
           <div className="flex-none">
             <GistIcon />
@@ -36,7 +41,12 @@ export function GistCard(props: GistCardProps) {
         </div>
         {/** <p>Short content of gist {name} goes here ...</p> **/}
       </div>
-      <div className="flex p-8 pt-4 gap-4">
+      <a href={url} className="h-32 md:h-full w-full">
+        <div className="h-full w-full flex flex-auto justify-center items-center">
+          <FileIcon className="w-1/2 h-1/2" viewBox="0 0 384 512" fill={iconFill} />
+        </div>
+      </a>
+      <div className="flex justify-end p-8 pt-4 gap-4">
         <a href={`${url}/stargazers`} className="hover:text-primary">
           <div className="flex items-center gap-1">
             <StarIcon />
