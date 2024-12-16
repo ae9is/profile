@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [lts/*]
+        node-version: [lts/iron]
     steps:
       - name: Query GitHub API
         id: query-api
