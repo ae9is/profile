@@ -31,7 +31,7 @@
     "react-dice-roll": "^1.2.2",
     "react-dom": "^18.3.1",
     "theme-change": "^2.5.0",
-    "vite": "^5.4.21"
+    "vite": "^7.3.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",
@@ -59,7 +59,7 @@
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.4.5",
-    "vitest": "^1.6.0"
+    "vitest": "^4.0.16"
   },
   "overrides": {
     "react-dice-roll": {
