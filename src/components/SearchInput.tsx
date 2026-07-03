@@ -30,6 +30,7 @@ export function SearchInput(props: SearchInputProps) {
         />
       </svg>
       <input
+        data-testid="search-input"
         type="text"
         className="grow text-black dark:text-white placeholder:text-neutral-content"
         placeholder={placeholder}

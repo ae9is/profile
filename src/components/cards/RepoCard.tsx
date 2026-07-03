@@ -75,7 +75,10 @@ export function RepoCard(props: RepoCardProps) {
   const thumbnail = useFilePath(`/profile/thumbs/${name}`)
 
   return (
-    <div className="flex flex-col h-full w-full relative rounded-xl bg-base-100 shadow-xl border-2 border-neutral text-neutral-content justify-between">
+    <div
+      data-testid="repository-card"
+      className="flex flex-col h-full w-full relative rounded-xl bg-base-100 shadow-xl border-2 border-neutral text-neutral-content justify-between"
+    >
       <div className="flex flex-col flex-auto">
         <div className="flex flex-col p-8 pb-2 gap-2">
           <div className="flex items-center gap-2">

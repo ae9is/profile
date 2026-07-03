@@ -210,7 +210,9 @@ export function App() {
         <div className="flex justify-between md:px-2 items-center">
           <div className="flex gap-4 pr-4">
             <a href={`https://github.com/${userLogin}?tab=repositories`}>
-              <h3 className="text-black dark:text-white">Repositories</h3>
+              <h3 data-testid="repositories-heading" className="text-black dark:text-white">
+                Repositories
+              </h3>
             </a>
             <div className="">{repoCount}</div>
           </div>
@@ -218,6 +220,7 @@ export function App() {
             <label className="flex items-center">
               <div className="text-sm mr-4">Sort order</div>
               <select
+                data-testid="sort-order-control"
                 value={sortOrder}
                 onChange={onChangeSort}
                 className="select select-bordered select-sm"
@@ -230,13 +233,13 @@ export function App() {
                 <option>{RepoSort.STARS}</option>
               </select>
             </label>
-            <label className="flex items-center mr-1">
+            <label data-testid="dice-roller" className="flex items-center mr-1">
               <span className="text-sm mr-4">Random!</span>
               <Dice cheatValue={5} size={32} rollingTime={350} onRoll={onDiceRoll} />
             </label>
           </div>
         </div>
-        <div className="mb-4">
+        <div data-testid="repository-list" className="mb-4">
           <CardList cards={repoCards} />
         </div>
       </div>
