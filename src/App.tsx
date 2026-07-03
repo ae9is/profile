@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-import Dice from 'react-dice-roll'
+import DiceModule from 'react-dice-roll'
 import { useUserRepositories } from './hooks/useUserRepositories'
 import { shuffle } from './lib/array'
 import { Gist, PinnedGist, PinnedRepository, Repository } from './queries/userRepositories'
@@ -17,6 +17,8 @@ enum RepoSort {
   STARS = 'Stars',
   RANDOM = 'Random',
 }
+
+const Dice = (DiceModule as unknown as { default?: typeof DiceModule }).default ?? DiceModule
 
 export function App() {
   const meta = useUserRepositories()
